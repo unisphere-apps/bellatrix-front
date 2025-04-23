@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 class LoginActivity : AppCompatActivity() {
 
+
     private val client = OkHttpClient()
     private val baseUrl = "http://10.0.2.2/bellatrix-backend/public" // localhost pour Android Emulator
 
@@ -31,6 +32,12 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Remplis tous les champs", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        val registerLink = findViewById<TextView>(R.id.linkToRegister)
+        registerLink.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 

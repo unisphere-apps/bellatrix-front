@@ -1,5 +1,6 @@
 package com.example.bellatrix_front
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -100,6 +101,46 @@ class MainActivity : ComponentActivity() {
             Text("🔐 Token: $token")
             Text("👤 User ID: $userId")
             Text("🛡️ Role ID: $roleId")
+
+            if (roleId == 2 || roleId == 3) {
+                Button(
+                    onClick = {
+                        val intent = Intent(context, AdminPanelActivity::class.java).apply {
+                            putExtra("token", token)
+                            putExtra("user_id", userId)
+                            putExtra("role_id", roleId)
+                        }
+                        context.startActivity(intent)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text("🛠️ Panel Admin")
+                }
+            }
+
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {
+                    val intent = android.content.Intent(context, MyReservationsActivity::class.java).apply {
+                        putExtra("token", token)
+                        putExtra("user_id", userId)
+                        putExtra("role_id", roleId)
+                    }
+                    context.startActivity(intent)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Text("📄 Mes Inscriptions")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
 
             Spacer(modifier = Modifier.height(16.dp))
             Text("📚 Activités disponibles:", style = MaterialTheme.typography.titleMedium)

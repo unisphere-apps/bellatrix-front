@@ -59,4 +59,14 @@
         android:text="Se connecter"
         android:backgroundTint="@color/purple_500"
         android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/linkToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pas encore inscrit ? Crée un compte"
+        android:textColor="@color/purple_500"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"/>
+
 </LinearLayout>
