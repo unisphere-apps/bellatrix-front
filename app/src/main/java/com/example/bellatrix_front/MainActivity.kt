@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,15 +30,40 @@ class MainActivity : ComponentActivity() {
     private val client = OkHttpClient()
     private val baseUrl = "http://10.0.2.2/bellatrix-backend/public"
 
+    private lateinit var token: String
+    private var userId: Int = -1
+    private var roleId: Int = -1
+    private lateinit var nom: String
+    private lateinit var prenom: String
+    private lateinit var etablissement: String
+    private lateinit var email: String
+
+    private lateinit var adminPanelLauncher: ActivityResultLauncher<Intent>
+
+    private val refreshTrigger = mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val token = intent.getStringExtra("token") ?: ""
-        val userId = intent.getIntExtra("user_id", -1)
-        val roleId = intent.getIntExtra("role_id", -1)
+        // 🔐 Récupération des données depuis l’intent
+        token = intent.getStringExtra("token") ?: ""
+        userId = intent.getIntExtra("user_id", -1)
+        roleId = intent.getIntExtra("role_id", -1)
+        nom = intent.getStringExtra("nom") ?: ""
+        prenom = intent.getStringExtra("prenom") ?: ""
+        etablissement = intent.getStringExtra("etablissement") ?: ""
+        email = intent.getStringExtra("email") ?: ""
 
         enableEdgeToEdge()
 
+        adminPanelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            refreshTrigger.value = !refreshTrigger.value // ✅ force le LaunchedEffect à se relancer
+        }
+
+        setMainContent()
+    }
+
+    private fun setMainContent() {
         setContent {
             BellatrixfrontTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
@@ -44,6 +71,11 @@ class MainActivity : ComponentActivity() {
                         token = token,
                         userId = userId,
                         roleId = roleId,
+                        nom = nom,
+                        prenom = prenom,
+                        etablissement = etablissement,
+                        email = email,
+                        refreshTrigger = refreshTrigger,
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
@@ -51,8 +83,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        setMainContent() // recharge les composables avec les nouvelles données
+    }
+
     @Composable
-    fun MainScreen(token: String, userId: Int, roleId: Int, modifier: Modifier = Modifier) {
+    fun MainScreen(
+        token: String,
+        userId: Int,
+        roleId: Int,
+        nom: String,
+        prenom: String,
+        etablissement: String,
+        email: String,
+        modifier: Modifier = Modifier,
+        refreshTrigger: State<Boolean>
+    )
+    {
 
         var activities by remember { mutableStateOf(listOf<Activity>()) }
         var userReservations by remember { mutableStateOf(listOf<Reservation>()) }
@@ -64,11 +112,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        LaunchedEffect(true) {
+        LaunchedEffect(refreshTrigger.value) {
             fetchActivities(token) { result ->
                 activities = result
             }
-
             fetchUserReservations(token, userId) { result ->
                 userReservations = result
             }
@@ -103,14 +150,21 @@ class MainActivity : ComponentActivity() {
             Text("🛡️ Role ID: $roleId")
 
             if (roleId == 2 || roleId == 3) {
+                val activity = (context as? ComponentActivity)
+                val launcher = (activity as? MainActivity)?.adminPanelLauncher
+
                 Button(
                     onClick = {
                         val intent = Intent(context, AdminPanelActivity::class.java).apply {
                             putExtra("token", token)
                             putExtra("user_id", userId)
                             putExtra("role_id", roleId)
+                            putExtra("nom", nom)
+                            putExtra("prenom", prenom)
+                            putExtra("etablissement", etablissement)
+                            putExtra("email", email)
                         }
-                        context.startActivity(intent)
+                        launcher?.launch(intent)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,10 +179,14 @@ class MainActivity : ComponentActivity() {
 
             Button(
                 onClick = {
-                    val intent = android.content.Intent(context, MyReservationsActivity::class.java).apply {
+                    val intent = Intent(context, MyReservationsActivity::class.java).apply {
                         putExtra("token", token)
                         putExtra("user_id", userId)
                         putExtra("role_id", roleId)
+                        putExtra("nom", nom)
+                        putExtra("prenom", prenom)
+                        putExtra("etablissement", etablissement)
+                        putExtra("email", email)
                     }
                     context.startActivity(intent)
                 },
@@ -141,6 +199,25 @@ class MainActivity : ComponentActivity() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Button(
+                onClick = {
+                    val intent = Intent(context, ProfileActivity::class.java).apply {
+                        putExtra("token", token)
+                        putExtra("user_id", userId)
+                        putExtra("role_id", roleId)
+                        putExtra("nom", nom)
+                        putExtra("prenom", prenom)
+                        putExtra("etablissement", etablissement)
+                        putExtra("email", email)
+                    }
+                    context.startActivity(intent)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Text("👤 Mon Profil")
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
             Text("📚 Activités disponibles:", style = MaterialTheme.typography.titleMedium)

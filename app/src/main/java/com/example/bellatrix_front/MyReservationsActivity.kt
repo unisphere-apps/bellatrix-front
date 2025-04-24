@@ -28,12 +28,16 @@ class MyReservationsActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.backToHomeButton)
         backButton.setOnClickListener {
-            val homeIntent = Intent(this, MainActivity::class.java).apply {
-                putExtra("token", token)
-                putExtra("user_id", userId)
-                putExtra("role_id", roleId)
+            val backIntent = Intent(this, MainActivity::class.java).apply {
+                putExtra("token", incomingIntent.getStringExtra("token"))
+                putExtra("user_id", incomingIntent.getIntExtra("user_id", -1))
+                putExtra("role_id", incomingIntent.getIntExtra("role_id", -1))
+                putExtra("nom", incomingIntent.getStringExtra("nom"))
+                putExtra("prenom", incomingIntent.getStringExtra("prenom"))
+                putExtra("etablissement", incomingIntent.getStringExtra("etablissement"))
+                putExtra("email", incomingIntent.getStringExtra("email"))
             }
-            startActivity(homeIntent)
+            startActivity(backIntent)
             finish()
         }
 

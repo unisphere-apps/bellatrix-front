@@ -12,6 +12,25 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <!-- 🏢 Logo de l'entreprise -->
+        <ImageView
+            android:id="@+id/companyLogo"
+            android:layout_width="120dp"
+            android:layout_height="95dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Logo de l'entreprise"
+            android:src="@drawable/unisphere_logo" />
+
+        <!-- 📱 Logo de l’application -->
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="140dp"
+            android:layout_height="102dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo de l'application"
+            android:src="@drawable/bellatrix_logo" />
+
         <!-- Titre -->
         <TextView
             android:layout_width="wrap_content"

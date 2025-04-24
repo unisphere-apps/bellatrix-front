@@ -47,6 +47,9 @@
             android:name=".AdminPanelActivity"
             android:theme="@style/Theme.Bellatrixfront" />
 
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/Theme.Bellatrixfront" />
 
     </application>
 

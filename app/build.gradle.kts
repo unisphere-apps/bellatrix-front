@@ -59,4 +59,5 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.logging.interceptor)
 }

@@ -72,15 +72,22 @@ class LoginActivity : AppCompatActivity() {
                     val token = jsonResponse.getString("token")
                     val userId = jsonResponse.getInt("user_id")
                     val roleId = jsonResponse.getInt("role_id")
+                    val nom = jsonResponse.getString("nom")
+                    val prenom = jsonResponse.getString("prenom")
+                    val etablissement = jsonResponse.getString("etablissement")
+                    val userEmail = jsonResponse.getString("email")
 
                     runOnUiThread {
                         Toast.makeText(this@LoginActivity, "Connecté !", Toast.LENGTH_SHORT).show()
 
-                        // Passer les données à MainActivity
                         val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                             putExtra("token", token)
                             putExtra("user_id", userId)
                             putExtra("role_id", roleId)
+                            putExtra("nom", nom)
+                            putExtra("prenom", prenom)
+                            putExtra("etablissement", etablissement)
+                            putExtra("email", userEmail)
                         }
 
                         startActivity(intent)
