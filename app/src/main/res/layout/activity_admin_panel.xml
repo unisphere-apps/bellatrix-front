@@ -9,6 +9,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- 🏠 Retour à l'accueil -->
         <Button
             android:id="@+id/backToHomeButton"
             android:layout_width="match_parent"
@@ -47,7 +48,7 @@
             android:id="@+id/dateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date (yyyy-mm-dd)" />
+            android:hint="Date (yyyy-mm-dd hh:mm:ss)" />
 
         <EditText
             android:id="@+id/capaciteEditText"
@@ -69,82 +70,33 @@
             android:background="@android:color/darker_gray"
             android:layout_marginVertical="24dp" />
 
-        <!-- 🗑️ Supprimer une activité -->
+        <!-- 📋 Voir toutes les activités -->
+        <Button
+            android:id="@+id/viewAllActivitiesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📋 Voir toutes les activités" />
+
+        <ListView
+            android:id="@+id/activitiesListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 📋 Voir les inscriptions d'une activité sélectionnée -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Supprimer une activité"
+            android:text="Inscriptions pour une activité"
             android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/deleteActivityIdEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ID de l'activité"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/deleteActivityButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Supprimer l'activité"
-            android:layout_marginTop="8dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginVertical="24dp" />
-
-        <!-- 📋 Voir les inscriptions -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Inscriptions par activité"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/activityIdViewEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ID de l'activité" />
-
-        <Button
-            android:id="@+id/viewRegistrationsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Voir les inscriptions"
-            android:layout_marginTop="8dp" />
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
 
         <ListView
             android:id="@+id/registrationsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
-
-        <!-- ❌ Retirer une inscription -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retirer une inscription"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"/>
-
-        <EditText
-            android:id="@+id/reservationIdEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ID de la réservation"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/deleteReservationButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Retirer l'inscription"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 </ScrollView>
